@@ -10,6 +10,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
+import {MatPaginatorModule} from '@angular/material/paginator';
 
 @NgModule({
   declarations: [],
@@ -22,7 +23,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSnackBarModule,
     MatToolbarModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ],
   exports: [
     MatFormFieldModule,
@@ -32,7 +34,8 @@ import { MatTableModule } from '@angular/material/table';
     MatSnackBarModule,
     MatToolbarModule,
     MatIconModule,
-    MatTableModule
+    MatTableModule,
+    MatPaginatorModule
   ]
 })
 export class SharedModule { }

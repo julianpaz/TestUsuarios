@@ -1,24 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { UsuariosService } from './usuarios.service';
+import { responseI } from 'src/app/models/usuarios/response.interface';
+import { ViewChild } from '@angular/core';
+import { MatPaginator } from '@angular/material/paginator';
 
-export interface PeriodicElement {
-  name: string;
-  position: number;
-  weight: number;
-  symbol: string;
-}
-
-const ELEMENT_DATA: PeriodicElement[] = [
-  {position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H'},
-  {position: 2, name: 'Helium', weight: 4.0026, symbol: 'He'},
-  {position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li'},
-  {position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be'},
-  {position: 5, name: 'Boron', weight: 10.811, symbol: 'B'},
-  {position: 6, name: 'Carbon', weight: 12.0107, symbol: 'C'},
-  {position: 7, name: 'Nitrogen', weight: 14.0067, symbol: 'N'},
-  {position: 8, name: 'Oxygen', weight: 15.9994, symbol: 'O'},
-  {position: 9, name: 'Fluorine', weight: 18.9984, symbol: 'F'},
-  {position: 10, name: 'Neon', weight: 20.1797, symbol: 'Ne'},
-];
 
 @Component({
   selector: 'app-usuarios',
@@ -27,12 +12,39 @@ const ELEMENT_DATA: PeriodicElement[] = [
 })
 export class UsuariosComponent implements OnInit {
 
-  displayedColumns: string[] = ['usuario', 'nombre', 'apellido', 'telefono'];
-  dataSource = ELEMENT_DATA;
+  public displayedColumns: string[] = ['id', 'email', 'first_name', 'last_name','avatar'];
+  public dataSource: responseI;
+  public page: number;
 
-  constructor() { }
+  @ViewChild(MatPaginator) paginator!: MatPaginator;
+
+  constructor(private api:UsuariosService) {
+    this.dataSource = {
+      "page": 0,
+      "per_page": 1,
+      "total": 0,
+      "total_pages":0,
+      "paginator": [],
+      "data": []
+    };
+    this.page = 1;
+  }
 
   ngOnInit(): void {
+    this.loadData(this.page)
+  }
+  ngAfterViewInit() {
+    this.dataSource.data = this.dataSource.paginator;
+  }
+
+  loadData(page:number){
+    this.api.getUsuarios(page).subscribe((res) => {
+      this.dataSource = res;
+    })
+  }
+
+  upPage(event:any){
+    console.log(event);
   }
 
 }
